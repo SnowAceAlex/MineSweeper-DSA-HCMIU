@@ -6,12 +6,13 @@ import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.management.Notification;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel  implements MouseListener{
 	private PanelNotification p1;
 	private PanelPlayer p2;
 
@@ -96,5 +97,44 @@ public class GamePanel extends JPanel {
 
 	public void setP2(PanelPlayer p2) {
 		this.p2 = p2;
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		ButtonPlay[][] arrayButton = p2.getArrayButton();
+		for(int i = 0; i < arrayButton.length; i++){
+			for(int j = 0; j < arrayButton[i].length; j++){
+				if(e.getButton() == 1 && e.getSource() == arrayButton[i][j]){
+					if(!world.open(i,j)){
+						int option = JOptionPane.showConfirmDialog(this, "Are you want to retry!", "Notification",
+								JOptionPane.YES_NO_OPTION);
+						if(option == JOptionPane.YES_OPTION){
+							gameFrame.setVisible(false);
+							new GameFrame(8,8,10);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
 	}
 }

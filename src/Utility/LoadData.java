@@ -20,6 +20,15 @@ public class LoadData {
 					.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream( "minesweeper.png")));
 			listImage.put("icon", img.getSubimage(0,0,16,16));
 			listImage.put("noUse", img.getSubimage( 32,48,16,16));
+			listImage.put("b0", img.getSubimage(48, 48, 16, 16));
+			listImage.put("b1", img.getSubimage(0, 16, 16, 16));
+			listImage.put("b2", img.getSubimage(16, 16, 16, 16));
+			listImage.put("b3", img.getSubimage(32, 16, 16, 16));
+			listImage.put("b4", img.getSubimage(48, 16, 16, 16));
+			listImage.put("b5", img.getSubimage(0, 32, 16, 16));
+			listImage.put("b6", img.getSubimage(16, 32, 16, 16));
+			listImage.put("b7", img.getSubimage(32, 32, 16, 16));
+			listImage.put("b8", img.getSubimage(48, 32, 16, 16));
 
 
 			BufferedImage img2 =ImageIO

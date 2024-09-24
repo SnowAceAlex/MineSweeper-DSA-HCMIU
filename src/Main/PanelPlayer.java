@@ -24,7 +24,7 @@ public class PanelPlayer extends JPanel {
 		for (int i = 0; i < arrayButton.length; i++) {
 			for (int j = 0; j < arrayButton[i].length; j++) {
 				add(arrayButton[i][j] = new ButtonPlay(this));
-
+				arrayButton[i][j].addMouseListener(game);
 			}
 		}
 	}
