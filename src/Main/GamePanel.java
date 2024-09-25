@@ -116,6 +116,8 @@ public class GamePanel extends JPanel  implements MouseListener{
 						if(option == JOptionPane.YES_OPTION){
 							gameFrame.setVisible(false);
 							new GameFrame(8,8,10);
+						} else {
+							world.fullTrue();
 						}
 					}
 				}

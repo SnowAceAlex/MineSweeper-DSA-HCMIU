@@ -14,6 +14,8 @@ public class World extends JPanel {
 	private Random rd;
 	private ButtonPlay[][] arrayButton;
 	private int[][] arrayOfBomb; //Bomb is "-1";
+	private boolean[][] failChecker; //Use to notify the bomb location for retry table
+	private boolean trueFail; //Use to mark that bomb has buummm for all program to always return retrytabel
 	private ButtonSmile buttonSmile;
 	private LabelNumber lbTime, lbBoom;
 	private int boom;
@@ -28,6 +30,8 @@ public class World extends JPanel {
 
 		arrayButton = new ButtonPlay[w][h];
 		arrayOfBomb = new int[w][h];
+		failChecker = new boolean[w][h];
+
 
 		rd = new Random();
 
@@ -89,15 +93,53 @@ public class World extends JPanel {
 	}
 
 	public boolean open(int i, int j){
-		int number = arrayOfBomb[i][j];
+		if(!trueFail) {
+			if (!failChecker[i][j]) {
+//			failChecker[i][j] = true;
 
-		if(number != -1){
-			arrayButton[i][j].setNumber(number);
-			arrayButton[i][j].repaint();
-			return true;
-		}else {
-			return false;
+				//Use to remove all blank square together
+				if(arrayOfBomb[i][j] == 0){
+					for(int l = i-1; l <= i+1; l++){
+						for(int k = j-1; k <= j+1; k++){
+							if(l >= 0 && l <= arrayOfBomb.length - 1 && k >= 0 && k <= arrayOfBomb.length -1){
+								if(!failChecker[i][j]) {
+									open(l, k);
+								}
+							}
+						}
+					}
+				}
+
+				int number = arrayOfBomb[i][j];
+
+				if (number != -1) {
+					arrayButton[i][j].setNumber(number);
+					arrayButton[i][j].repaint();
+
+					return true;
+				}
+			}
+
+			if (arrayOfBomb[i][j] == -1) {
+				return false;
+			} else {
+				return true;
+			}
+		} else{
+			return false; // return false to trigger the loser executed
 		}
+	}
+
+	//always return true to force arrayBoolean which i use to notification for program prevent them say no and cont play when fail
+	public void fullTrue(){
+		for (int i = 0; i < failChecker.length; i++) {
+			for (int j = 0; j < failChecker[i].length; j++) {
+				if(!failChecker[i][j]){
+					failChecker[i][j] = true;
+				}
+			}
+		}
+		trueFail = true;
 	}
 
 	public ButtonSmile getButtonSmile() {
@@ -130,5 +172,13 @@ public class World extends JPanel {
 
 	public void setLbBoom(LabelNumber lbBoom) {
 		this.lbBoom = lbBoom;
+	}
+
+	public boolean[][] getFailChecker() {
+		return failChecker;
+	}
+
+	public void setFailChecker(boolean[][] failChecker) {
+		this.failChecker = failChecker;
 	}
 }
