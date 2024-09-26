@@ -14,8 +14,9 @@ public class World extends JPanel {
 	private Random rd;
 	private ButtonPlay[][] arrayButton;
 	private int[][] arrayOfBomb; //Bomb is "-1";
-	private boolean[][] failChecker; //Use to notify the bomb location for retry table
-	private boolean trueFail; //Use to mark that bomb has buummm for all program to always return retrytabel
+	private boolean[][] arrayBooleanChecker; //Use to keep track and check the state of array in type of boolean
+	private boolean isFail; //Use to mark that bomb has buummm for all program to always return retrytabel
+	private boolean isWin;
 	private ButtonSmile buttonSmile;
 	private LabelNumber lbTime, lbBoom;
 	private int boom;
@@ -30,7 +31,7 @@ public class World extends JPanel {
 
 		arrayButton = new ButtonPlay[w][h];
 		arrayOfBomb = new int[w][h];
-		failChecker = new boolean[w][h];
+		arrayBooleanChecker = new boolean[w][h];
 
 
 		rd = new Random();
@@ -93,16 +94,29 @@ public class World extends JPanel {
 	}
 
 	public boolean open(int i, int j){
-		if(!trueFail) {
-			if (!failChecker[i][j]) {
-//			failChecker[i][j] = true;
+
+		if(winnerChecker()){
+			isWin = true;
+
+			fullTrue();
+
+			return false;
+		}
+
+		if(!isFail && !isWin) {
+			if (!arrayBooleanChecker[i][j]) {
+			arrayBooleanChecker[i][j] = true;
 
 				//Use to remove all blank square together
 				if(arrayOfBomb[i][j] == 0){
+					arrayBooleanChecker[i][j] = true;
+					arrayButton[i][j].setNumber(0);
+					arrayButton[i][j].repaint();
+
 					for(int l = i-1; l <= i+1; l++){
 						for(int k = j-1; k <= j+1; k++){
 							if(l >= 0 && l <= arrayOfBomb.length - 1 && k >= 0 && k <= arrayOfBomb.length -1){
-								if(!failChecker[i][j]) {
+								if(!arrayBooleanChecker[l][k]) {
 									open(l, k);
 								}
 							}
@@ -121,6 +135,7 @@ public class World extends JPanel {
 			}
 
 			if (arrayOfBomb[i][j] == -1) {
+				isFail = true;
 				return false;
 			} else {
 				return true;
@@ -130,16 +145,31 @@ public class World extends JPanel {
 		}
 	}
 
-	//always return true to force arrayBoolean which i use to notification for program prevent them say no and cont play when fail
-	public void fullTrue(){
-		for (int i = 0; i < failChecker.length; i++) {
-			for (int j = 0; j < failChecker[i].length; j++) {
-				if(!failChecker[i][j]){
-					failChecker[i][j] = true;
+	public boolean winnerChecker() {
+		int count = 0;
+		for (int i = 0; i < arrayBooleanChecker.length; i++) {
+			for (int j = 0; j < arrayBooleanChecker[i].length; j++) {
+				if (!arrayBooleanChecker[i][j]) {
+					count++;
 				}
 			}
 		}
-		trueFail = true;
+		if (count == boom) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	//always return true to force arrayBoolean which i use to notification for program prevent them say no and cont play when fail
+	public void fullTrue(){
+		for (int i = 0; i < arrayBooleanChecker.length; i++) {
+			for (int j = 0; j < arrayBooleanChecker[i].length; j++) {
+				if(!arrayBooleanChecker[i][j]){
+					arrayBooleanChecker[i][j] = true;
+				}
+			}
+		}
 	}
 
 	public ButtonSmile getButtonSmile() {
@@ -174,11 +204,27 @@ public class World extends JPanel {
 		this.lbBoom = lbBoom;
 	}
 
-	public boolean[][] getFailChecker() {
-		return failChecker;
+	public boolean[][] getArrayBooleanChecker() {
+		return arrayBooleanChecker;
 	}
 
-	public void setFailChecker(boolean[][] failChecker) {
-		this.failChecker = failChecker;
+	public void setArrayBooleanChecker(boolean[][] arrayBooleanChecker) {
+		this.arrayBooleanChecker = arrayBooleanChecker;
+	}
+
+	public boolean isFail() {
+		return isFail;
+	}
+
+	public void setFail(boolean fail) {
+		isFail = fail;
+	}
+
+	public boolean isWin() {
+		return isWin;
+	}
+
+	public void setWin(boolean win) {
+		isWin = win;
 	}
 }
