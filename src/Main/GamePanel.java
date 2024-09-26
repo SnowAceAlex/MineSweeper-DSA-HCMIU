@@ -109,7 +109,7 @@ public class GamePanel extends JPanel  implements MouseListener{
 		ButtonPlay[][] arrayButton = p2.getArrayButton();
 		for(int i = 0; i < arrayButton.length; i++){
 			for(int j = 0; j < arrayButton[i].length; j++){
-				if(e.getButton() == 1 && e.getSource() == arrayButton[i][j]){
+				if(e.getButton() == 1 && e.getSource() == arrayButton[i][j] && !world.getArrayPutFlag()[i][j]){
 					if(!world.open(i,j)){
 						if(world.isFail()) {
 
@@ -133,6 +133,8 @@ public class GamePanel extends JPanel  implements MouseListener{
 
 						}
 					}
+				}else if(e.getButton() == 3 && e.getSource() == arrayButton[i][j]){
+					world.putFlag(i, j);
 				}
 			}
 		}
