@@ -1,7 +1,6 @@
 package Utility;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
@@ -17,11 +16,12 @@ public class LoadData {
 
 		try {
 			BufferedImage img =ImageIO
-					.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream( "minesweeper.png")));
+					.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("minesweeper.png")));
 			listImage.put("bomb", img.getSubimage(0,0,16,16));
 			listImage.put("bombRed", img.getSubimage(16,0,16,16));
 			listImage.put("flag", img.getSubimage(32,0,16,16));
 			listImage.put("explode", img.getSubimage(48,0,16,16));
+			listImage.put("bombX", img.getSubimage(17,48,15,16));
 			listImage.put("noUse", img.getSubimage( 32,48,16,16));
 			listImage.put("b0", img.getSubimage(48, 48, 16, 16));
 			listImage.put("b1", img.getSubimage(0, 16, 16, 16));
