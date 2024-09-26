@@ -15,6 +15,7 @@ public class World extends JPanel {
 	private ButtonPlay[][] arrayButton;
 	private int[][] arrayOfBomb; //Bomb is "-1";
 	private boolean[][] arrayBooleanChecker; //Use to keep track and check the state of array in type of boolean
+	private boolean[][] arrayPutFlag;
 	private boolean isFail; //Use to mark that bomb has buummm for all program to always return retrytabel
 	private boolean isWin;
 	private ButtonSmile buttonSmile;
@@ -32,6 +33,7 @@ public class World extends JPanel {
 		arrayButton = new ButtonPlay[w][h];
 		arrayOfBomb = new int[w][h];
 		arrayBooleanChecker = new boolean[w][h];
+		arrayPutFlag = new boolean[w][h];
 
 
 		rd = new Random();
@@ -94,54 +96,90 @@ public class World extends JPanel {
 	}
 
 	public boolean open(int i, int j){
-
-		if(winnerChecker()){
-			isWin = true;
-
-			fullTrue();
-
-			return false;
-		}
-
-		if(!isFail && !isWin) {
-			if (!arrayBooleanChecker[i][j]) {
-			arrayBooleanChecker[i][j] = true;
-
-				//Use to remove all blank square together
-				if(arrayOfBomb[i][j] == 0){
+//		if(!arrayPutFlag[i][j]) {
+			if (!isFail && !isWin) {
+				if (!arrayBooleanChecker[i][j]) {
 					arrayBooleanChecker[i][j] = true;
-					arrayButton[i][j].setNumber(0);
-					arrayButton[i][j].repaint();
 
-					for(int l = i-1; l <= i+1; l++){
-						for(int k = j-1; k <= j+1; k++){
-							if(l >= 0 && l <= arrayOfBomb.length - 1 && k >= 0 && k <= arrayOfBomb.length -1){
-								if(!arrayBooleanChecker[l][k]) {
-									open(l, k);
+					//Use to remove all blank square together
+					if (arrayOfBomb[i][j] == 0) {
+						arrayBooleanChecker[i][j] = true;
+						arrayButton[i][j].setNumber(0);
+						arrayButton[i][j].repaint();
+
+						if (winnerChecker()) {
+							isWin = true;
+
+							fullTrue();
+
+							return false;
+						}
+
+						for (int l = i - 1; l <= i + 1; l++) {
+							for (int k = j - 1; k <= j + 1; k++) {
+								if (l >= 0 && l <= arrayOfBomb.length - 1 && k >= 0 && k <= arrayOfBomb.length - 1) {
+									if (!arrayBooleanChecker[l][k]) {
+										open(l, k);
+									}
 								}
 							}
 						}
 					}
+
+					int number = arrayOfBomb[i][j];
+
+					if (number != -1) {
+						arrayButton[i][j].setNumber(number);
+						arrayButton[i][j].repaint();
+
+						if (winnerChecker()) {
+							isWin = true;
+
+							fullTrue();
+
+							return false;
+						}
+
+						return true;
+					}
 				}
 
-				int number = arrayOfBomb[i][j];
-
-				if (number != -1) {
-					arrayButton[i][j].setNumber(number);
+				if (arrayOfBomb[i][j] == -1) {
+					arrayButton[i][j].setNumber(11);
 					arrayButton[i][j].repaint();
+					isFail = true;
 
+					for (int l = 0; l < arrayBooleanChecker.length; l++) {
+						for (int k = 0; k < arrayBooleanChecker[l].length; k++) {
+							if (arrayOfBomb[l][k] == -1 && !arrayBooleanChecker[l][k]) {
+								arrayButton[l][k].setNumber(10);
+								arrayButton[l][k].repaint();
+							}
+						}
+					}
+
+					return false;
+				} else {
 					return true;
 				}
-			}
-
-			if (arrayOfBomb[i][j] == -1) {
-				isFail = true;
-				return false;
 			} else {
-				return true;
+				return false; // return false to trigger the loser executed
 			}
-		} else{
-			return false; // return false to trigger the loser executed
+//		}
+//		return true;
+	}
+
+	public void putFlag(int i, int j){
+		if(!arrayBooleanChecker[i][j]){
+			if(arrayPutFlag[i][j]){
+				arrayPutFlag[i][j] = false;
+				arrayButton[i][j].setNumber(-1);
+				arrayButton[i][j].repaint();
+			}else {
+				arrayPutFlag[i][j] = true;
+				arrayButton[i][j].setNumber(9);
+				arrayButton[i][j].repaint();
+			}
 		}
 	}
 
@@ -226,5 +264,13 @@ public class World extends JPanel {
 
 	public void setWin(boolean win) {
 		isWin = win;
+	}
+
+	public boolean[][] getArrayPutFlag() {
+		return arrayPutFlag;
+	}
+
+	public void setArrayPutFlag(boolean[][] arrayPutFlag) {
+		this.arrayPutFlag = arrayPutFlag;
 	}
 }

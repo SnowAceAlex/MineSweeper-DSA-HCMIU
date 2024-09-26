@@ -24,7 +24,7 @@ public class GameFrame extends JFrame {
 
 		add(gamePanel = new GamePanel(w, h, boom, this));
 
-		setIconImage(loadData.getListImage().get("icon"));
+		setIconImage(loadData.getListImage().get("bomb"));
 		pack();
 		setResizable(false);
 		setLocationRelativeTo(null);
