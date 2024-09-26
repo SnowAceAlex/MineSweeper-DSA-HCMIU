@@ -110,6 +110,11 @@ public class GamePanel extends JPanel  implements MouseListener{
 		for(int i = 0; i < arrayButton.length; i++){
 			for(int j = 0; j < arrayButton[i].length; j++){
 				if(e.getButton() == 1 && e.getSource() == arrayButton[i][j] && !world.getArrayPutFlag()[i][j]){
+
+					if(!getP1().getTimer().isRunning()){
+						getP1().getTimer().start();
+					}
+
 					if(!world.open(i,j)){
 						if(world.isFail()) {
 

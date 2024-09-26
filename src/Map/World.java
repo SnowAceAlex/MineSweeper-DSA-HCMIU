@@ -16,6 +16,7 @@ public class World extends JPanel {
 	private int[][] arrayOfBomb; //Bomb is "-1";
 	private boolean[][] arrayBooleanChecker; //Use to keep track and check the state of array in type of boolean
 	private boolean[][] arrayPutFlag;
+	private int flag;
 	private boolean isFail; //Use to mark that bomb has buummm for all program to always return retrytabel
 	private boolean isWin;
 	private ButtonSmile buttonSmile;
@@ -172,13 +173,17 @@ public class World extends JPanel {
 	public void putFlag(int i, int j){
 		if(!arrayBooleanChecker[i][j]){
 			if(arrayPutFlag[i][j]){
+				flag--;
 				arrayPutFlag[i][j] = false;
 				arrayButton[i][j].setNumber(-1);
 				arrayButton[i][j].repaint();
-			}else {
+				game.getP1().updateLbBoom();
+			}else if(flag < boom){
+				flag++;
 				arrayPutFlag[i][j] = true;
 				arrayButton[i][j].setNumber(9);
 				arrayButton[i][j].repaint();
+				game.getP1().updateLbBoom();
 			}
 		}
 	}
@@ -313,5 +318,13 @@ public class World extends JPanel {
 
 	public void setArrayPutFlag(boolean[][] arrayPutFlag) {
 		this.arrayPutFlag = arrayPutFlag;
+	}
+
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
 	}
 }

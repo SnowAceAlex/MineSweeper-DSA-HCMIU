@@ -13,7 +13,8 @@ public class PanelNotification extends JPanel {
 	private GamePanel game;
 	private ButtonSmile btSmile;
 	private LabelNumber lbTime, lbBoom;
-
+	private Timer timer;
+	private int time;
 
 	public PanelNotification(GamePanel game) {
 		this.game = game;
@@ -29,15 +30,50 @@ public class PanelNotification extends JPanel {
 		add(p13 = new JPanel(), BorderLayout.CENTER);
 
 		p11.add(lbBoom = new LabelNumber(this,"000"));
-
+		updateLbBoom();
 
 		p12.add(lbTime = new LabelNumber(this,"000"));
+		timer = new Timer(1000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				time++;
+				updateLbTime();
+			}
+		});
 
 		p13.add(btSmile = new ButtonSmile(this));
 
 
 	}
 
+	public void updateLbTime(){
+		if(time > 999){
+			lbTime.setNumber("infinite");
+		} else {
+			String cTime = String.valueOf(time);
+			if (cTime.length() == 1) {
+				lbTime.setNumber("00" + cTime);
+			} else if (cTime.length() == 2) {
+				lbTime.setNumber("0" + cTime);
+			} else {
+				lbTime.setNumber(cTime);
+			}
+
+			lbTime.repaint();
+		}
+	}
+
+	public void updateLbBoom(){
+		String boom = String.valueOf(game.getBoom() - game.getWorld().getFlag());
+		if(boom.length() == 1){
+			lbBoom.setNumber("00" + boom);
+		} else if(boom.length() == 2) {
+			lbBoom.setNumber("0" + boom);
+		} else {
+			lbBoom.setNumber("0"+ boom);
+		}
+		lbBoom.repaint();
+	}
 
 	public GamePanel getGame() {
 		return game;
@@ -47,6 +83,11 @@ public class PanelNotification extends JPanel {
 		this.game = game;
 	}
 
+	public Timer getTimer() {
+		return timer;
+	}
 
-
+	public void setTimer(Timer timer) {
+		this.timer = timer;
+	}
 }
