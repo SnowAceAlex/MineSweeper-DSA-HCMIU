@@ -128,13 +128,29 @@ public class GamePanel extends JPanel  implements MouseListener{
 									JOptionPane.YES_NO_OPTION);
 							if (option == JOptionPane.YES_OPTION) {
 								gameFrame.setVisible(false);
-								new GameFrame(8, 8, 10);
+								new GameFrame(w, h, boom);
 							}
 
 						}
 					}
 				}else if(e.getButton() == 3 && e.getSource() == arrayButton[i][j]){
 					world.putFlag(i, j);
+				}
+
+				//double-click
+				if (e.getClickCount() == 2 && e.getSource() == arrayButton[i][j] && world.getArrayBooleanChecker()[i][j]) {
+					if(!world.doubleClick(i,j)){
+
+						int option = JOptionPane.showConfirmDialog(this, "You lost, play again!", "Notification",
+								JOptionPane.YES_NO_OPTION);
+						if (option == JOptionPane.YES_OPTION) {
+							gameFrame.setVisible(false);
+							new GameFrame(w, h, boom);
+						} else {
+							world.fullTrue();
+						}
+
+					}
 				}
 			}
 		}

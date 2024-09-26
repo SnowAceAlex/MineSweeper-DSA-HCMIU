@@ -74,6 +74,10 @@ public class ButtonPlay extends JButton {
 				g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get("explode"),0,0,
 						getPreferredSize().width,getPreferredSize().height,null );
 				break;
+			case 13:
+				g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get("bombX"),0,0,
+						getPreferredSize().width,getPreferredSize().height,null );
+				break;
 			default:
 				break;
 		}

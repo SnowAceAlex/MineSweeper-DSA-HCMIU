@@ -145,14 +145,14 @@ public class World extends JPanel {
 				}
 
 				if (arrayOfBomb[i][j] == -1) {
-					arrayButton[i][j].setNumber(11);
+					arrayButton[i][j].setNumber(12);
 					arrayButton[i][j].repaint();
 					isFail = true;
 
 					for (int l = 0; l < arrayBooleanChecker.length; l++) {
 						for (int k = 0; k < arrayBooleanChecker[l].length; k++) {
 							if (arrayOfBomb[l][k] == -1 && !arrayBooleanChecker[l][k]) {
-								arrayButton[l][k].setNumber(10);
+								arrayButton[l][k].setNumber(11);
 								arrayButton[l][k].repaint();
 							}
 						}
@@ -181,6 +181,47 @@ public class World extends JPanel {
 				arrayButton[i][j].repaint();
 			}
 		}
+	}
+
+	public boolean doubleClick(int i, int j){
+
+		boolean isHaveMine = false;
+
+		for (int l = i - 1; l <= i + 1; l++) {
+			for (int k = j - 1; k <= j + 1; k++) {
+				if (l >= 0 && l <= arrayOfBomb.length - 1 && k >= 0 && k <= arrayOfBomb[i].length - 1) {
+					if (!arrayPutFlag[l][k]) {
+						if (arrayOfBomb[l][k] == -1) {
+							isHaveMine = true;
+							arrayButton[l][k].setNumber(12);
+							arrayButton[l][k].repaint();
+							arrayBooleanChecker[l][k] = true;
+						} else if (!arrayBooleanChecker[l][k]) {
+							if (arrayOfBomb[l][k] == 0) {
+								open(l, k);
+							} else {
+								arrayButton[l][k].setNumber(arrayOfBomb[l][k]);
+								arrayButton[l][k].repaint();
+								arrayBooleanChecker[l][k] = true;
+							}
+						}
+					}
+				}
+			}
+		}
+		if (isHaveMine) {
+			for (int l = 0; l < arrayBooleanChecker.length; l++) {
+				for (int k = 0; k < arrayBooleanChecker[i].length; k++) {
+					if (arrayOfBomb[l][k] == -1 && !arrayBooleanChecker[l][k]) {
+						arrayButton[l][k].setNumber(10);
+						arrayButton[l][k].repaint();
+					}
+				}
+			}
+			return false;
+		}
+
+		return true;
 	}
 
 	public boolean winnerChecker() {
