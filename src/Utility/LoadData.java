@@ -48,6 +48,7 @@ public class LoadData {
 			listImage.put("8", img2.getSubimage(104, 0, 13, 23));
 			listImage.put("9", img2.getSubimage(117, 0, 13, 23));
 			listImage.put("infinite", img2.getSubimage(120, 0, 13, 23));
+			listImage.put("tick", img2.getSubimage(140, 49, 7, 7));
 
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -96,47 +96,51 @@ public class World extends JPanel {
 		}
 	}
 
-	public boolean open(int i, int j){
-//		if(!arrayPutFlag[i][j]) {
-			if (!isFail && !isWin) {
-				if (!arrayBooleanChecker[i][j]) {
+	public boolean open(int i, int j) {
+
+		if (!isFail && !isWin) {
+			if (!arrayBooleanChecker[i][j]) {
+				if (arrayOfBomb[i][j] == 0) {
+
 					arrayBooleanChecker[i][j] = true;
+					arrayButton[i][j].setNumber(0);
+					arrayButton[i][j].repaint();
 
-					//Use to remove all blank square together
-					if (arrayOfBomb[i][j] == 0) {
-						arrayBooleanChecker[i][j] = true;
-						arrayButton[i][j].setNumber(0);
-						arrayButton[i][j].repaint();
+					if (winnerChecker()) {
+						isWin = true;
 
-						if (winnerChecker()) {
-							isWin = true;
+						return false;
+					}
 
-							fullTrue();
-
-							return false;
-						}
-
-						for (int l = i - 1; l <= i + 1; l++) {
-							for (int k = j - 1; k <= j + 1; k++) {
-								if (l >= 0 && l <= arrayOfBomb.length - 1 && k >= 0 && k <= arrayOfBomb.length - 1) {
-									if (!arrayBooleanChecker[l][k]) {
-										open(l, k);
-									}
+					for (int l = i - 1; l <= i + 1; l++) {
+						for (int k = j - 1; k <= j + 1; k++) {
+							if (l >= 0 && l <= arrayOfBomb.length - 1 && k >= 0 && k <= arrayOfBomb[i].length - 1) {
+								if (!arrayBooleanChecker[l][k]) {
+									open(l, k);
 								}
 							}
 						}
 					}
 
+					if (winnerChecker()) {
+						isWin = true;
+
+						return false;
+					}
+
+				} else {
+
 					int number = arrayOfBomb[i][j];
 
 					if (number != -1) {
+
+						arrayBooleanChecker[i][j] = true;
+
 						arrayButton[i][j].setNumber(number);
 						arrayButton[i][j].repaint();
 
 						if (winnerChecker()) {
 							isWin = true;
-
-							fullTrue();
 
 							return false;
 						}
@@ -144,30 +148,39 @@ public class World extends JPanel {
 						return true;
 					}
 				}
+			}
 
-				if (arrayOfBomb[i][j] == -1) {
-					arrayButton[i][j].setNumber(12);
-					arrayButton[i][j].repaint();
-					isFail = true;
+			if (arrayOfBomb[i][j] == -1) {
+				arrayButton[i][j].setNumber(12);
+				arrayButton[i][j].repaint();
+				isFail = true;
 
-					for (int l = 0; l < arrayBooleanChecker.length; l++) {
-						for (int k = 0; k < arrayBooleanChecker[l].length; k++) {
-							if (arrayOfBomb[l][k] == -1 && !arrayBooleanChecker[l][k]) {
-								arrayButton[l][k].setNumber(11);
-								arrayButton[l][k].repaint();
+				for (int j2 = 0; j2 < arrayBooleanChecker.length; j2++) {
+					for (int k = 0; k < arrayBooleanChecker[i].length; k++) {
+						if (arrayOfBomb[j2][k] == -1 && !arrayBooleanChecker[j2][k]) {
+							if (j2 != i || k != j) {
+								arrayButton[j2][k].setNumber(10);
+								arrayButton[j2][k].repaint();
 							}
 						}
 					}
+				}
+
+				return false;
+			} else {
+
+				if (winnerChecker()) {
+					isWin = true;
 
 					return false;
-				} else {
-					return true;
 				}
-			} else {
-				return false; // return false to trigger the loser executed
+
+				return true;
 			}
-//		}
-//		return true;
+		} else
+
+			return false;
+
 	}
 
 	public void putFlag(int i, int j){

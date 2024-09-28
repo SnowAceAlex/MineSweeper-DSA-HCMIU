@@ -9,7 +9,7 @@ public class ButtonSmile extends JButton {
 
     public ButtonSmile(PanelNotification p){
         this.p = p;
-        setPreferredSize(new Dimension(100,100));
+        setPreferredSize(new Dimension(75,75));
     }
 
     @Override
