@@ -9,7 +9,7 @@ public class LabelNumber extends JLabel {
     public LabelNumber(PanelNotification p, String number) {
         this.p = p;
         this.number = number;
-        setPreferredSize(new Dimension(156,92));
+        setPreferredSize(new Dimension(78,46));
     }
 
     @Override
@@ -19,9 +19,9 @@ public class LabelNumber extends JLabel {
             g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get("infinite"), 26, 0, 26, 46, null);
             g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get("infinite"), 52, 0, 26, 46, null);
         } else {
-            g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get(String.valueOf(number.charAt(0))), 0, 0, 52, 92, null);
-            g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get(String.valueOf(number.charAt(1))), 52, 0, 52, 92, null);
-            g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get(String.valueOf(number.charAt(2))), 104, 0, 52, 92, null);
+            g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get(String.valueOf(number.charAt(0))), 0, 0, 26, 46, null);
+            g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get(String.valueOf(number.charAt(1))), 26, 0, 26, 46, null);
+            g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get(String.valueOf(number.charAt(2))), 52, 0, 26, 46, null);
         }
     }
 

@@ -12,7 +12,7 @@ public class ButtonPlay extends JButton {
 	public ButtonPlay(PanelPlayer p) {
 		number = -1;
 		this.p = p;
-		setPreferredSize(new Dimension(75, 75));
+		setPreferredSize(new Dimension(50, 50));
 	}
 
 	@Override
