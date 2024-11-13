@@ -5,6 +5,7 @@ import Map.World;
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Stack;
 
 import javax.management.Notification;
 import javax.swing.JOptionPane;
@@ -12,7 +13,7 @@ import javax.swing.JPanel;
 
 
 
-public class GamePanel extends JPanel  implements MouseListener{
+public class GamePanel extends JPanel{
 	private PanelNotification p1;
 	private PanelPlayer p2;
 
@@ -23,6 +24,7 @@ public class GamePanel extends JPanel  implements MouseListener{
 	private int w;
 	private int h;
 	private int boom;
+	private Stack<World> undoStack = new Stack<>();
 
 	public GamePanel(int w, int h, int boom, GameFrame gameFrame) {
 
@@ -38,10 +40,25 @@ public class GamePanel extends JPanel  implements MouseListener{
 
 		add(p1 = new PanelNotification(this), BorderLayout.NORTH);
 		add(p2 = new PanelPlayer(this), BorderLayout.CENTER);
+
+		// Add the GameMouseListener to handle mouse events
+		GameMouseListener gameMouseListener = new GameMouseListener(this, world, gameFrame, w, h, boom);
+		addMouseListener(gameMouseListener);
 	}
 
+	public void saveState() {
+        World clonedWorld = world;
+        undoStack.push(clonedWorld);
+    }
 
-
+	public void undo() {
+		if (!undoStack.isEmpty()) {
+			world = undoStack.pop();
+			repaint();
+		} else {
+			JOptionPane.showMessageDialog(this, "No more undo steps available.");
+		}
+	}
 
 	public int getW() {
 		return w;
@@ -99,82 +116,4 @@ public class GamePanel extends JPanel  implements MouseListener{
 		this.p2 = p2;
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-
-		ButtonPlay[][] arrayButton = p2.getArrayButton();
-		for (int i = 0; i < arrayButton.length; i++) {
-			for (int j = 0; j < arrayButton[i].length; j++) {
-				if (e.getButton() == 1 && e.getSource() == arrayButton[i][j] && !world.getArrayPutFlag()[i][j]) {
-
-					if (!getP1().getTimer().isRunning()) {
-						getP1().getTimer().start();
-					}
-
-					if (!world.open(i, j)) {
-
-						if (world.isFail()) {
-
-							getP1().getTimer().stop();
-
-							int option = JOptionPane.showConfirmDialog(this, "You lost, play again?", "Notification",
-									JOptionPane.YES_NO_OPTION);
-							if (option == JOptionPane.YES_OPTION) {
-								gameFrame.setVisible(false);
-								new GameFrame(w, h, boom);
-							} else {
-								world.fullTrue();
-							}
-						} else if (world.isWin()) {
-
-							getP1().getTimer().stop();
-
-							int option = JOptionPane.showConfirmDialog(this, "You win, play again ?", "Notification",
-									JOptionPane.YES_NO_OPTION);
-							if (option == JOptionPane.YES_OPTION) {
-								gameFrame.setVisible(false);
-								new GameFrame(w, h, boom);
-							}
-						}
-					}
-				} else if (e.getButton() == 3 && e.getSource() == arrayButton[i][j]) {
-					world.putFlag(i, j);
-				}
-				if (e.getClickCount() == 2 && e.getSource() == arrayButton[i][j] && world.getArrayBooleanChecker()[i][j]) {
-					if (!world.doubleClick(i, j)) {
-
-						int option = JOptionPane.showConfirmDialog(this, "You lost, play again?", "Notification",
-								JOptionPane.YES_NO_OPTION);
-
-						if (option == JOptionPane.YES_OPTION) {
-							gameFrame.setVisible(false);
-							new GameFrame(w, h, boom);
-						} else {
-							world.fullTrue();
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-
-	}
 }

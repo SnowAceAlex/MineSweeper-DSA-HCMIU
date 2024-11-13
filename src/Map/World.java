@@ -15,7 +15,7 @@ public class World extends JPanel {
 	private ButtonPlay[][] arrayButton;
 	private int[][] arrayOfBomb; //Bomb is "-1";
 	private boolean[][] arrayBooleanChecker; //Use to keep track and check the state of array in type of boolean
-	private boolean[][] arrayPutFlag;
+	private boolean[][] arrayPutFlag; //Use to keep track and check the state of array in type of boolean
 	private int flag;
 	private boolean isFail; //Use to mark that bomb has buummm for all program to always return retrytabel
 	private boolean isWin;
@@ -140,7 +140,7 @@ public class World extends JPanel {
 						arrayButton[i][j].repaint();
 
 						if (winnerChecker()) {
-							isWin = true;
+							isWin	 = true;
 
 							return false;
 						}
