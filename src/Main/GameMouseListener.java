@@ -31,7 +31,6 @@ public class GameMouseListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        gamePanel.saveState(); // Save the current state before making changes
 
         ButtonPlay[][] arrayButton = gamePanel.getP2().getArrayButton();
         for (int i = 0; i < arrayButton.length; i++) {

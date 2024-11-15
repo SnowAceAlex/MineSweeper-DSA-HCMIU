@@ -27,6 +27,7 @@ public class PanelPlayer extends JPanel {
 		}
 	}
 
+
 	public ButtonPlay[][] getArrayButton() {
 		return arrayButton;
 	}

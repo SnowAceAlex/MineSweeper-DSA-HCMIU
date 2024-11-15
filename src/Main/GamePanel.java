@@ -16,15 +16,12 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel{
 	private PanelNotification p1;
 	private PanelPlayer p2;
-
 	private GameFrame gameFrame;
-
 	private World world;
-
 	private int w;
 	private int h;
 	private int boom;
-	private Stack<World> undoStack = new Stack<>();
+
 
 	public GamePanel(int w, int h, int boom, GameFrame gameFrame) {
 
@@ -46,19 +43,8 @@ public class GamePanel extends JPanel{
 		addMouseListener(gameMouseListener);
 	}
 
-	public void saveState() {
-        World clonedWorld = world;
-        undoStack.push(clonedWorld);
-    }
 
-	public void undo() {
-		if (!undoStack.isEmpty()) {
-			world = undoStack.pop();
-			repaint();
-		} else {
-			JOptionPane.showMessageDialog(this, "No more undo steps available.");
-		}
-	}
+
 
 	public int getW() {
 		return w;
@@ -115,5 +101,6 @@ public class GamePanel extends JPanel{
 	public void setP2(PanelPlayer p2) {
 		this.p2 = p2;
 	}
+
 
 }
