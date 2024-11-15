@@ -1,6 +1,6 @@
 package Main;
 
-import Map.World;
+import Logic.World;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -32,17 +32,17 @@ public class GameMouseListener implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
 
-        ButtonPlay[][] arrayButton = gamePanel.getP2().getArrayButton();
+        ButtonPlay[][] arrayButton = gamePanel.getpanelPlayer().getArrayButton();
         for (int i = 0; i < arrayButton.length; i++) {
             for (int j = 0; j < arrayButton[i].length; j++) {
                 if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == arrayButton[i][j] && !world.getArrayPutFlag()[i][j]) {
-                    if (!gamePanel.getP1().getTimer().isRunning()) {
-                        gamePanel.getP1().getTimer().start();
+                    if (!gamePanel.getpanelNotification().getTimer().isRunning()) {
+                        gamePanel.getpanelNotification().getTimer().start();
                     }
 
                     if (!world.open(i, j)) {
                         if (world.isFail()) {
-                            gamePanel.getP1().getTimer().stop();
+                            gamePanel.getpanelNotification().getTimer().stop();
                             int option = JOptionPane.showConfirmDialog(gamePanel, "You lost, play again?", "Notification", JOptionPane.YES_NO_OPTION);
                             if (option == JOptionPane.YES_OPTION) {
                                 gameFrame.setVisible(false);
@@ -51,7 +51,7 @@ public class GameMouseListener implements MouseListener {
                                 world.fullTrue();
                             }
                         } else if (world.isWin()) {
-                            gamePanel.getP1().getTimer().stop();
+                            gamePanel.getpanelNotification().getTimer().stop();
                             int option = JOptionPane.showConfirmDialog(gamePanel, "You win, play again?", "Notification", JOptionPane.YES_NO_OPTION);
                             if (option == JOptionPane.YES_OPTION) {
                                 gameFrame.setVisible(false);

@@ -10,6 +10,7 @@ import javax.swing.*;
 
 public class PanelNotification extends JPanel {
 	private JPanel p11, p12, p13;
+	private JButton undoButton;
 	private GamePanel game;
 	private ButtonSmile btSmile;
 	private LabelNumber lbTime, lbBoom;
@@ -41,8 +42,14 @@ public class PanelNotification extends JPanel {
 			}
 		});
 
-		p13.add(btSmile = new ButtonSmile(this));
-
+		JButton undoButton = new JButton("Undo");
+		undoButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				game.undo();
+			}
+		});
+		p13.add(undoButton);
 
 	}
 
