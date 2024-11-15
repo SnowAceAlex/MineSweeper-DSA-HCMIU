@@ -1,26 +1,23 @@
 package Main;
 
-import Map.World;
+import Logic.World;
 
 import java.awt.BorderLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Stack;
 
-import javax.management.Notification;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
 
 public class GamePanel extends JPanel{
-	private PanelNotification p1;
-	private PanelPlayer p2;
+	private PanelNotification panelNotification;
+	private PanelPlayer panelPlayer;
 	private GameFrame gameFrame;
 	private World world;
-	private int w;
-	private int h;
+	private int width;
+	private int height;
 	private int boom;
+	private Stack<World> undoStack = new Stack<>();
 
 
 	public GamePanel(int w, int h, int boom, GameFrame gameFrame) {
@@ -28,38 +25,59 @@ public class GamePanel extends JPanel{
 		this.gameFrame = gameFrame;
 
 		this.boom = boom;
-		this.w = w;
-		this.h = h;
+		this.width = w;
+		this.height = h;
 
 		world = new World(w, h, boom, this);
 
 		setLayout(new BorderLayout(20, 20));
 
-		add(p1 = new PanelNotification(this), BorderLayout.NORTH);
-		add(p2 = new PanelPlayer(this), BorderLayout.CENTER);
+		add(panelNotification = new PanelNotification(this), BorderLayout.NORTH);
+		add(panelPlayer = new PanelPlayer(this), BorderLayout.CENTER);
 
 		// Add the GameMouseListener to handle mouse events
 		GameMouseListener gameMouseListener = new GameMouseListener(this, world, gameFrame, w, h, boom);
 		addMouseListener(gameMouseListener);
 	}
 
+	public void saveState() {
+		try {
+			World currentState = (World) world.clone();
+			undoStack.push(currentState);
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void undo() {
+		if (!undoStack.isEmpty()) {
+			world = undoStack.pop();
+			for (int i = 0; i < world.getArrayButton().length; i++) {
+				for (int j = 0; j < world.getArrayButton()[i].length; j++) {
+					world.getArrayButton()[i][j].repaint();
+				}
+			}
+			revalidate();
+			repaint();
+		}
+	}
 
 
 
 	public int getW() {
-		return w;
+		return width;
 	}
 
 	public void setW(int w) {
-		this.w = w;
+		this.width = width;
 	}
 
 	public int getH() {
-		return h;
+		return height;
 	}
 
 	public void setH(int h) {
-		this.h = h;
+		this.height = height;
 	}
 
 	public World getWorld() {
@@ -86,20 +104,20 @@ public class GamePanel extends JPanel{
 		this.boom = boom;
 	}
 
-	public PanelNotification getP1() {
-		return p1;
+	public PanelNotification getpanelNotification() {
+		return panelNotification;
 	}
 
-	public void setP1(PanelNotification p1) {
-		this.p1 = p1;
+	public void setpanelNotification(PanelNotification panelNotification) {
+		this.panelNotification = panelNotification;
 	}
 
-	public PanelPlayer getP2() {
-		return p2;
+	public PanelPlayer getpanelPlayer() {
+		return panelPlayer;
 	}
 
-	public void setP2(PanelPlayer p2) {
-		this.p2 = p2;
+	public void setpanelPlayer(PanelPlayer panelPlayer) {
+		this.panelPlayer = panelPlayer;
 	}
 
 

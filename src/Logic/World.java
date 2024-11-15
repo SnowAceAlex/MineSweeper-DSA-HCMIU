@@ -1,4 +1,4 @@
-package Map;
+package Logic;
 
 import Main.ButtonPlay;
 import Main.ButtonSmile;
@@ -97,7 +97,7 @@ public class World extends JPanel implements Cloneable{
 	}
 
 	public boolean open(int i, int j) {
-
+		game.saveState();
 		if (!isFail && !isWin) {
 			if (!arrayBooleanChecker[i][j]) {
 				if (arrayOfBomb[i][j] == 0) {
@@ -184,25 +184,26 @@ public class World extends JPanel implements Cloneable{
 	}
 
 	public void putFlag(int i, int j){
+		game.saveState();
 		if(!arrayBooleanChecker[i][j]){
 			if(arrayPutFlag[i][j]){
 				flag--;
 				arrayPutFlag[i][j] = false;
 				arrayButton[i][j].setNumber(-1);
 				arrayButton[i][j].repaint();
-				game.getP1().updateLbBoom();
+				game.getpanelNotification().updateLbBoom();
 			}else if(flag < boom){
 				flag++;
 				arrayPutFlag[i][j] = true;
 				arrayButton[i][j].setNumber(9);
 				arrayButton[i][j].repaint();
-				game.getP1().updateLbBoom();
+				game.getpanelNotification().updateLbBoom();
 			}
 		}
 	}
 
 	public boolean doubleClick(int i, int j){
-
+		game.saveState();
 		boolean isHaveMine = false;
 
 		for (int l = i - 1; l <= i + 1; l++) {
@@ -269,10 +270,20 @@ public class World extends JPanel implements Cloneable{
 		}
 	}
 
-	//Clone method to clone object
 	@Override
-	public World clone() throws CloneNotSupportedException {
-		return (World) super.clone();
+	public Object clone() throws CloneNotSupportedException {
+		World cloned = (World) super.clone();
+		cloned.arrayButton = new ButtonPlay[arrayButton.length][];
+		for (int i = 0; i < arrayButton.length; i++) {
+			cloned.arrayButton[i] = arrayButton[i].clone();
+			for (int j = 0; j < arrayButton[i].length; j++) {
+				cloned.arrayButton[i][j] = (ButtonPlay) arrayButton[i][j];
+			}
+		}
+		cloned.arrayOfBomb = arrayOfBomb.clone();
+		cloned.arrayBooleanChecker = arrayBooleanChecker.clone();
+		cloned.arrayPutFlag = arrayPutFlag.clone();
+		return cloned;
 	}
 
 	public ButtonSmile getButtonSmile() {

@@ -14,7 +14,7 @@ public class LabelNumber extends JLabel {
 
     @Override
     public void paint(Graphics g) {
-        if (number.equals("voCuc")) {
+        if (number.equals("infinite")) {
             g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get("infinite"), 0, 0, 26, 46, null);
             g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get("infinite"), 26, 0, 26, 46, null);
             g.drawImage(p.getGame().getGameFrame().getLoadData().getListImage().get("infinite"), 52, 0, 26, 46, null);
